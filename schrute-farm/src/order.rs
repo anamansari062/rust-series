@@ -28,7 +28,10 @@ fn take_order() -> Result<Option<u64>, Box<dyn Error>>{
             .prompt()?;
         total = total + (product.rate * unit);
 
-        let next = Select::new("", next_options.clone()).prompt()?;
+        let next = Select::new("", next_options.clone())
+        .with_formatter(&|_i| format!(""))
+        .prompt()?;
+        
         if next.eq(next_options[1]) {
             return Ok(Some(total));
         }
