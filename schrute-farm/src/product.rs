@@ -1,26 +1,21 @@
 use::std::error::Error;
 
 use csv;
-use serde::Deserialize;
+use crate::utils::ProductInfo;
 
-#[derive(Debug, Deserialize)]
-struct ProductInfo {
-    name: String,
-    rate: u8
-}
 
 fn read_from_file(path: &str) -> Result<(), Box<dyn Error>> {
     let mut reader = csv::Reader::from_path(path)?;
 
-    let headers = reader.headers();
-    println!("{:?}", headers);
+    let headers = reader.headers()?;
+    println!("{} {}", headers.get(0).unwrap_or("-"), headers.get(1).unwrap_or("-"));
 
     for result in reader.deserialize() {
         let record: ProductInfo = result?;
-        println!("{:?}", record);
+        println!("{}", record);
     }
 
-    Ok(())
+    Ok(()) 
 }
 
 
